@@ -827,6 +827,7 @@ defmodule Mix.Releases.Assembler do
                 include_src: release.profile.include_src,
                 include_system_libs: release.profile.include_system_libs,
                 erl_opts: release.profile.erl_opts,
+                iex_opts: release.profile.iex_opts,
                 run_erl_env: release.profile.run_erl_env,
                 erts_vsn: erts_vsn,
                 output_dir: release.profile.output_dir] ++ release.profile.overlay_vars

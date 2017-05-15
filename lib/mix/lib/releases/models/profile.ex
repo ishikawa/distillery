@@ -14,6 +14,7 @@ defmodule Mix.Releases.Profile do
     executable: false, # whether it's an executable release
     exec_opts: [transient: false], # options for an executable release
     erl_opts: nil, # string to be passed to erl
+    iex_opts: nil, # string to be passed to iex
     run_erl_env: nil, # string to be passed to run_erl
     dev_mode: nil, # boolean
     include_erts: nil, # boolean | "path/to/erts"

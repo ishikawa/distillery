@@ -68,6 +68,7 @@ defmodule Mix.Releases.Config do
                                                :dev_mode => get_opt(opts, :dev_mode, e.profile.dev_mode),
                                                :executable => get_opt(opts, :executable, e.profile.executable),
                                                :erl_opts => get_opt(opts, :erl_opts, e.profile.erl_opts),
+                                               :iex_opts => get_opt(opts, :iex_opts, e.profile.iex_opts),
                                                :run_erl_env => get_opt(opts, :run_erl_env, e.profile.run_erl_env),
                                                :exec_opts => Enum.into(get_opt(opts, :exec_opts, e.profile.exec_opts), %{})}}}
                   end), %{}),
@@ -378,6 +379,9 @@ defmodule Mix.Releases.Config do
         not is_nil(profile.erl_opts) and not is_binary(profile.erl_opts) ->
           raise ArgumentError,
             "expected :erl_opts to be a string, but got: #{inspect profile.erl_opts}"
+        not is_nil(profile.iex_opts) and not is_binary(profile.iex_opts) ->
+          raise ArgumentError,
+            "expected :iex_opts to be a string, but got: #{inspect profile.iex_opts}"
         not is_nil(profile.run_erl_env) and not is_binary(profile.run_erl_env) ->
           raise ArgumentError,
             "expected :run_erl_env to be a string, but got: #{inspect profile.run_erl_env}"

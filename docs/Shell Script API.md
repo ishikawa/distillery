@@ -70,6 +70,8 @@ will be marked as mutable.
   the path to the lib directory containing beams for this release
 - ERL_OPTS (mutable);
   the options to pass to the VM when starting (should be a string)
+- IEX_OPTS (mutable);
+  the options to pass to iex when starting (should be a string)
 - RUNNER_LOG_DIR (mutable);
   the path to the directory which will contain logs
 - EXTRA_OPTS (mutable);

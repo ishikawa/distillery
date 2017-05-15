@@ -152,7 +152,7 @@ defmodule Mix.Tasks.Release do
   defp parse_args(argv) do
     switches = [silent: :boolean, quiet: :boolean, verbose: :boolean,
                 executable: :boolean, transient: :boolean,
-                dev: :boolean, erl: :string, run_erl_env: :string, no_tar: :boolean,
+                dev: :boolean, erl: :string, iex: :string, run_erl_env: :string, no_tar: :boolean,
                 upgrade: :boolean, upfrom: :string, name: :string, profile: :string,
                 env: :string, no_warn_missing: :boolean,
                 warnings_as_errors: :boolean]
@@ -209,6 +209,7 @@ defmodule Mix.Tasks.Release do
      selected_environment: env,
      dev_mode: Keyword.get(overrides, :dev),
      erl_opts: Keyword.get(overrides, :erl),
+     iex_opts: Keyword.get(overrides, :iex),
      run_erl_env: Keyword.get(overrides, :run_erl_env),
      executable: executable?,
      exec_opts: exec_opts,

@@ -70,6 +70,8 @@ REL_DIR="${REL_DIR:-$RELEASE_ROOT_DIR/releases/$REL_VSN}"
 REL_LIB_DIR="${REL_LIB_DIR:-$RELEASE_ROOT_DIR/lib}"
 # Options passed to erl
 ERL_OPTS="${ERL_OPTS:-<%= release.profile.erl_opts %>}"
+# Options passed to iex
+IEX_OPTS="${IEX_OPTS:-<%= release.profile.iex_opts %>}"
 # Environment variables for run_erl
 RUN_ERL_ENV="${RUN_ERL_ENV:-<%= release.profile.run_erl_env %>}"
 # When stdout is piped to a file, this is the directory those files will
@@ -259,7 +261,8 @@ _rem_sh() {
             -boot start_clean -boot_var ERTS_LIB_DIR "$ERTS_LIB_DIR" \
             -kernel net_ticktime "$TICKTIME" \
             -user Elixir.IEx.CLI "$NAME_TYPE" "$id" -setcookie "$COOKIE" \
-            -extra --no-halt +iex -"$NAME_TYPE" "$id" --cookie "$COOKIE" --remsh "$NAME"
+            -extra --no-halt +iex -"$NAME_TYPE" "$id" --cookie "$COOKIE" --remsh "$NAME" \
+            $IEX_OPTS
     fi
 }
 
@@ -708,7 +711,8 @@ case "$1" in
             -mode "$CODE_LOADING_MODE" \
             ${ERL_OPTS} \
             -user Elixir.IEx.CLI \
-            -extra --no-halt +iex
+            -extra --no-halt +iex \
+            ${IEX_OPTS}
 
         # Dump environment info for logging purposes
         if [ ! -z "$VERBOSE" ]; then
@@ -871,6 +875,7 @@ case "$1" in
         echo "name:        $NAME"
         echo "cookie:      $COOKIE"
         echo "erl_opts:    ${ERL_OPTS:-none provided}"
+        echo "iex_opts:    ${IEX_OPTS:-none provided}"
         echo "run_erl_env: ${RUN_ERL_ENV:-none provided}"
         echo ""
         echo "hooks:"

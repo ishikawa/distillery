@@ -7,6 +7,7 @@
 @set rel_vsn=<%= release_version %>
 @set erts_vsn=<%= erts_vsn %>
 @set erl_opts=<%= erl_opts %>
+@set iex_opts=<%= iex_opts %>
 
 :: Discover the release root directory from the directory
 :: of this script
@@ -165,7 +166,7 @@
 )
 @set sys_config_target=%config_dir%\sys.config
 :: Replace environment variables
-@powershell -command "$content = get-content %sys_config_src%; [regex]::matches($content, '\${[\w\d_-]+}') | foreach { $content = $content.Replace($_.value, [System.Environment]::GetEnvironmentVariable($_.value)) }; out-file -filepath %sys_config_target% -inputobject $content -encoding ascii" 
+@powershell -command "$content = get-content %sys_config_src%; [regex]::matches($content, '\${[\w\d_-]+}') | foreach { $content = $content.Replace($_.value, [System.Environment]::GetEnvironmentVariable($_.value)) }; out-file -filepath %sys_config_target% -inputobject $content -encoding ascii"
 @set sys_config=%sys_config_target%
 @goto :eof
 
@@ -178,7 +179,7 @@
 )
 @set vmargs_target=%config_dir%\vm.args
 :: Replace environment variables
-@powershell -command "$content = get-content %vmargs_src%; [regex]::matches($content, '\${[\w\d_-]+}') | foreach { $content = $content.Replace($_.value, [System.Environment]::GetEnvironmentVariable($_.value)) }; out-file -filepath %vmargs_target% -inputobject $content -encoding ascii" 
+@powershell -command "$content = get-content %vmargs_src%; [regex]::matches($content, '\${[\w\d_-]+}') | foreach { $content = $content.Replace($_.value, [System.Environment]::GetEnvironmentVariable($_.value)) }; out-file -filepath %vmargs_target% -inputobject $content -encoding ascii"
 @set vm_args=%vmargs_target%
 @goto :eof
 
@@ -346,7 +347,7 @@ if exists "%rel_dir%\vm.args.bak" do (
        -config "%sys_config%"  ^
        -args_file "%vm_args%" ^
        -user Elixir.IEx.CLI ^
-       -extra --no-halt +iex
+       -extra --no-halt +iex %iex_opts%
 @goto :eof
 
 :: Start the release in the foreground
@@ -491,6 +492,7 @@ if exists "%rel_dir%\vm.args.bak" do (
 @echo Node Name           %node_name%
 @echo Node Cookie         !cookie!
 @echo Extra Opts          %erl_opts%
+@echo Extra Opts          %iex_opts%
 @echo.
 @echo Hooks:
 @for %%i in (%hook_dir%\*.d\*.bat) do (
@@ -512,7 +514,8 @@ if exists "%rel_dir%\vm.args.bak" do (
 @set id=remsh%RANDOM%-%node_name%
 @start "%node_name% attach" %werl% -hidden -noshell -boot "%clean_boot_script%" ^
        -user Elixir.IEx.CLI %node_type% %id% -setcookie "!cookie!" ^
-       -extra --no-halt +iex -%node_type% %id% --cookie "!cookie!" --remsh %node_name%
+       -extra --no-halt +iex -%node_type% %id% --cookie "!cookie!" --remsh %node_name% ^
+       %iex_opts%
 @endlocal
 @goto :eof
 
